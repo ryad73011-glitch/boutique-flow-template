@@ -40,7 +40,7 @@ export const translations = {
     aboutSubtitle: 'Depuis des générations, la célébration de la femme algérienne.',
     aboutP1: "Maison El Djazair puise son inspiration dans les palais de la Casbah d'Alger. Chaque pièce est un dialogue harmonieux entre la richesse historique de notre pays et le raffinement de la haute couture internationale.",
     aboutP2: "Nos maîtresses brodeuses perpétuent les points ancestraux de Fetla et Medjboud sur les velours les plus nobles, garantissant un tombé exceptionnel et une élégance intemporelle.",
-    contactTitle: 'Prendre Rendez-vous à l'Atelier',
+    contactTitle: "Prendre Rendez-vous à l'Atelier",
     contactSubtitle: "Pour un essayage privé, une commande de mariage ou une création sur-mesure.",
     fullName: 'Nom complet',
     phone: 'Numéro de téléphone',
