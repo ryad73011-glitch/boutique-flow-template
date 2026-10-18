@@ -31,7 +31,7 @@ export const PRODUCTS: Product[] = [
     category: 'caftan',
     nameFr: "Caftan d'Or El Bahdja",
     nameAr: 'قفطان الذهب البهجة',
-    subtitleFr: 'Satin duchesse ivoire & passementerie fil d'or',
+    subtitleFr: "Satin duchesse ivoire & passementerie fil d'or",
     subtitleAr: 'ساتان دوشيس عاجي مع حزام وسفيفة مذهبة',
     priceDzd: 185000,
     imageUrl: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=80',
