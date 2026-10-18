@@ -1,0 +1,54 @@
+:root {
+  --color-charcoal-900: #101012;
+  --color-charcoal-800: #18181c;
+  --color-charcoal-700: #222228;
+  --color-charcoal-600: #32323a;
+  --color-warm-cream: #faf7f2;
+  --color-warm-cream-surface: #f3ece4;
+  --color-warm-cream-border: #dcd2c3;
+  --color-gold-accent: #c8a97e;
+  --color-gold-light: #dfc6a4;
+  --color-gold-dark: #8c6e42;
+  --font-serif: 'Cinzel', 'Amiri', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-charcoal-900);
+  color: var(--color-warm-cream);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.text-gold {
+  color: var(--color-gold-accent);
+}
+
+.bg-gold {
+  background-color: var(--color-gold-accent);
+}
+
+.border-gold {
+  border-color: var(--color-gold-accent);
+}

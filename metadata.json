@@ -1,0 +1,6 @@
+{
+  "name": "Maison El Djazair",
+  "description": "Boutique de mode algérienne haut de gamme - Maison El Djazair. Collections haute couture, karakou brodé main, caftans royaux et prêt-à-porter moderne.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
