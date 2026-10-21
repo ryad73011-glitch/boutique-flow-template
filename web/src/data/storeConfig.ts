@@ -19,6 +19,7 @@ const whatsappPhone = normalizePhone(
 
 export const storeConfig = {
   name: envValue(import.meta.env.VITE_STORE_NAME, 'MAISON EL DJAZAIR'),
+  nameAr: envValue(import.meta.env.VITE_STORE_NAME_AR, 'دار الجزائر'),
   taglineFr: envValue(import.meta.env.VITE_STORE_TAGLINE_FR, 'HAUTE COUTURE ALGÉRIENNE'),
   taglineAr: envValue(import.meta.env.VITE_STORE_TAGLINE_AR, 'خياطة راقية جزائرية'),
   whatsappPhone,
