@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Product, Language } from '../types';
 import { formatPrice, buildWhatsAppLink, WHATSAPP_PHONE } from '../data/products';
 import { translations } from '../translations';
+import { storeConfig } from '../data/storeConfig';
 
 interface ProductDetailModalProps {
   product: Product;
@@ -194,6 +195,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </button>
 
           {/* WhatsApp Action */}
+          {storeConfig.whatsappConfigured ? (
           <a
             href={whatsappUrl}
             target="_blank"
@@ -215,6 +217,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           >
             <span>💬 {t.orderWhatsApp}</span>
           </a>
+          ) : (
+            <p role="status" style={{ fontSize: '12px', textAlign: 'center', color: '#e6cba3' }}>{language === 'ar' ? 'زر الطلب سيتفعّل بعد إعداد رقم المتجر الحقيقي.' : 'La commande sera activée après configuration du vrai numéro WhatsApp du magasin.'}</p>
+          )}
           <span style={{ fontSize: '11px', textAlign: 'center', color: '#888' }}>
             {t.orderWhatsAppSubtitle} ({WHATSAPP_PHONE})
           </span>
