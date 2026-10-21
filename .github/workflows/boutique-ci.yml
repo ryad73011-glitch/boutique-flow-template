@@ -58,10 +58,13 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v3
         with:
-          packages: |
-            platform-tools
-            platforms;android-36.1
-            build-tools;36.0.0
+          packages: ''
+      - name: Install Android SDK packages
+        run: |
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          if [ -z "$SDKMANAGER" ]; then echo 'sdkmanager not found'; exit 1; fi
+          yes | "$SDKMANAGER" --licenses
+          "$SDKMANAGER" "platform-tools" "platforms;android-36.1" "build-tools;36.0.0"
       - uses: gradle/actions/setup-gradle@v4
       - name: Run unit tests and build debug APK
         run: ./gradlew --no-daemon testDebugUnitTest assembleDebug
