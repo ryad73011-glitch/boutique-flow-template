@@ -16,6 +16,8 @@ function normalizePhone(value: string): string {
 const whatsappPhone = normalizePhone(
   envValue(import.meta.env.VITE_WHATSAPP_PHONE, '')
 );
+const atelierPhone = envValue(import.meta.env.VITE_ATELIER_PHONE, 'À configurer');
+const atelierPhoneConfigured = normalizePhone(atelierPhone).length >= 8;
 
 export const storeConfig = {
   name: envValue(import.meta.env.VITE_STORE_NAME, 'MAISON EL DJAZAIR'),
@@ -25,7 +27,8 @@ export const storeConfig = {
   whatsappPhone,
   whatsappConfigured: whatsappPhone.length >= 10,
   whatsappDisplay: whatsappPhone ? `+${whatsappPhone}` : 'À configurer',
-  atelierPhone: envValue(import.meta.env.VITE_ATELIER_PHONE, '+213 555 123 456'),
+  atelierPhone,
+  atelierPhoneConfigured,
   addressFr: envValue(import.meta.env.VITE_ATELIER_ADDRESS_FR, 'Adresse à personnaliser'),
   addressAr: envValue(import.meta.env.VITE_ATELIER_ADDRESS_AR, 'العنوان يُخصّص حسب المتجر'),
   hoursFr: envValue(import.meta.env.VITE_ATELIER_HOURS_FR, 'Horaires à confirmer'),
