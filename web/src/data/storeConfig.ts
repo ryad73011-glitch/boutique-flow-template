@@ -14,7 +14,7 @@ function normalizePhone(value: string): string {
 }
 
 const whatsappPhone = normalizePhone(
-  envValue(import.meta.env.VITE_WHATSAPP_PHONE, '213555123456')
+  envValue(import.meta.env.VITE_WHATSAPP_PHONE, '')
 );
 
 export const storeConfig = {
@@ -23,7 +23,8 @@ export const storeConfig = {
   taglineFr: envValue(import.meta.env.VITE_STORE_TAGLINE_FR, 'HAUTE COUTURE ALGÉRIENNE'),
   taglineAr: envValue(import.meta.env.VITE_STORE_TAGLINE_AR, 'خياطة راقية جزائرية'),
   whatsappPhone,
-  whatsappDisplay: `+${whatsappPhone}`,
+  whatsappConfigured: whatsappPhone.length >= 10,
+  whatsappDisplay: whatsappPhone ? `+${whatsappPhone}` : 'À configurer',
   atelierPhone: envValue(import.meta.env.VITE_ATELIER_PHONE, '+213 555 123 456'),
   addressFr: envValue(import.meta.env.VITE_ATELIER_ADDRESS_FR, 'Adresse à personnaliser'),
   addressAr: envValue(import.meta.env.VITE_ATELIER_ADDRESS_AR, 'العنوان يُخصّص حسب المتجر'),
