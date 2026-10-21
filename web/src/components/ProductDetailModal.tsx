@@ -150,6 +150,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {product.sizes.map((size) => (
                 <button
                   key={size}
+                  type="button"
+                  aria-pressed={selectedSize === size}
                   onClick={() => setSelectedSize(size)}
                   style={{
                     padding: '8px 14px',
