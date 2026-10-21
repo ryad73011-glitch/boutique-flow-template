@@ -74,7 +74,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </a>
 
         <a
-          href={storeConfig.atelierPhoneConfigured ? `tel:${ATELIER_PHONE.replace(/\\s+/g, '')}` : undefined}
+          href={storeConfig.atelierPhoneConfigured ? `tel:${ATELIER_PHONE.replace(/\s+/g, '')}` : undefined}
           aria-disabled={!storeConfig.atelierPhoneConfigured}
           style={{
             padding: '20px',
