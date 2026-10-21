@@ -37,7 +37,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, []);
 
   const total = items.reduce((sum, item) => sum + item.product.priceDzd * item.quantity, 0);
   const message = isArabic
