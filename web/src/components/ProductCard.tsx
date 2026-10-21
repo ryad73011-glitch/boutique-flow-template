@@ -1,7 +1,6 @@
 import React from 'react';
 import { Product, Language } from '../types';
 import { formatPrice } from '../data/products';
-import { translations } from '../translations';
 
 interface ProductCardProps {
   product: Product;
@@ -10,8 +9,6 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, language, onSelect }) => {
-  const t = translations[language];
-
   return (
     <div
       onClick={() => onSelect(product)}
