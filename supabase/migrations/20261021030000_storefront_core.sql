@@ -271,5 +271,5 @@ using (public.has_store_role(store_id, array['owner', 'admin']));
 grant select on public.stores, public.products to anon, authenticated;
 grant insert, update, delete on public.stores to authenticated;
 grant insert, update, delete on public.products to authenticated;
-grant select, insert, update, delete on public.store_memberships to authenticated;
+grant select on public.store_memberships to authenticated;
 grant select, insert, update, delete on public.orders, public.order_items to authenticated;
