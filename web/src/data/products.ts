@@ -92,7 +92,7 @@ export function formatPrice(price: number, lang: 'fr' | 'ar'): string {
 
 export function buildWhatsAppLink(product: Product, size: string, lang: 'fr' | 'ar'): string {
   const message = lang === 'ar'
-    ? `السلام عليكم دار الجزائر،\n\nأود طلب قطعة: ${product.nameAr}\nالمرجع: ${product.reference}\nالمقاس المطلوب: ${size}\nالسعر: ${formatPrice(product.priceDzd, lang)}\n\nيرجى تزويدي بتفاصيل التوصيل والحجز. شكراً.`
+    ? `السلام عليكم ${storeConfig.nameAr}،\n\nأود طلب قطعة: ${product.nameAr}\nالمرجع: ${product.reference}\nالمقاس المطلوب: ${size}\nالسعر: ${formatPrice(product.priceDzd, lang)}\n\nيرجى تزويدي بتفاصيل التوصيل والحجز. شكراً.`
     : `Bonjour ${storeConfig.name},\n\nJe souhaite commander la pièce suivante :\n- Modèle : ${product.nameFr}\n- Référence : ${product.reference}\n- Taille : ${size}\n- Prix : ${formatPrice(product.priceDzd, lang)}\n\nMerci de m'indiquer les délais et modalités !`;
 
   return `https://wa.me/${storeConfig.whatsappPhone}?text=${encodeURIComponent(message)}`;
