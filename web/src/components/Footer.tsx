@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
           }}>
             {language === 'ar'
               ? 'دار أزياء جزائرية راقية مكرسة لإحياء فن الكاراكو، القفطان والأزياء الملكية التراثية بأنامل أمهر حرفيات العاصمة.'
-              : 'Maison de haute couture algérienne dédiée à la sublimation du costume traditionnel, du Karakou impérial et du sur-mesure d'exception.'}
+              : "Maison de haute couture algérienne dédiée à la sublimation du costume traditionnel, du Karakou impérial et du sur-mesure d'exception."}
           </p>
         </div>
 
