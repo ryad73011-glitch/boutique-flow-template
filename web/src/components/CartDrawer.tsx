@@ -80,7 +80,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 <span style={{ color: 'var(--color-gold-accent)' }}>{formatPrice(total, language)}</span>
               </div>
               <p style={{ color: '#aaa', fontSize: '12px', marginBottom: '14px' }}>{isArabic ? 'لا يوجد دفع إلكتروني. سيفتح WhatsApp برسالة جاهزة، ويجب عليك الضغط على إرسال بعد تأكيد التفاصيل.' : 'Pas de paiement en ligne. WhatsApp s’ouvrira avec un message à vérifier puis à envoyer.'}</p>
-              <a href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={onClose} style={{ display: 'block', textAlign: 'center', padding: '14px', borderRadius: '6px', background: 'var(--color-gold-accent)', color: 'var(--color-charcoal-900)', textDecoration: 'none', fontWeight: 700 }}>{isArabic ? 'متابعة الطلب عبر WhatsApp' : 'Continuer sur WhatsApp'}</a>
+              {storeConfig.whatsappConfigured ? (
+                <a href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={onClose} style={{ display: 'block', textAlign: 'center', padding: '14px', borderRadius: '6px', background: 'var(--color-gold-accent)', color: 'var(--color-charcoal-900)', textDecoration: 'none', fontWeight: 700 }}>{isArabic ? 'متابعة الطلب عبر WhatsApp' : 'Continuer sur WhatsApp'}</a>
+              ) : (
+                <p role="status" style={{ textAlign: 'center', padding: '14px', borderRadius: '6px', border: '1px solid var(--color-charcoal-600)', color: '#e6cba3', fontSize: '13px' }}>{isArabic ? 'هذه نسخة تجريبية. يجب على صاحب المتجر إعداد رقم WhatsApp الحقيقي قبل تفعيل الطلبات.' : 'Version de démonstration : le propriétaire doit configurer un vrai numéro WhatsApp avant d’activer les commandes.'}</p>
+              )}
             </div>
           </>
         )}
