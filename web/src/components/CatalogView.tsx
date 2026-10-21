@@ -10,7 +10,7 @@ interface CatalogViewProps {
 }
 
 const normalizeSearchText = (value: string) =>
-  value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLocaleLowerCase();
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
 
 export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProduct }) => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
