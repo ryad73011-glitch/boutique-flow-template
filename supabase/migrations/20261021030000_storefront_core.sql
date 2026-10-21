@@ -83,7 +83,7 @@ create table if not exists public.order_items (
   constraint order_items_order_store_fk
     foreign key (store_id, order_id) references public.orders(store_id, id) on delete cascade,
   constraint order_items_product_store_fk
-    foreign key (store_id, product_id) references public.products(store_id, id) on delete set null
+    foreign key (store_id, product_id) references public.products(store_id, id) on delete restrict
 );
 
 create index if not exists products_store_status_sort_idx
@@ -136,7 +136,7 @@ as $$
 $$;
 
 revoke all on function public.has_store_role(uuid, text[]) from public;
-grant execute on function public.has_store_role(uuid, text[]) to authenticated;
+grant execute on function public.has_store_role(uuid, text[]) to anon, authenticated;
 
 -- A store creator becomes its owner atomically. Clients cannot grant themselves roles.
 create or replace function public.add_store_creator_as_owner()
@@ -266,3 +266,10 @@ drop policy if exists order_items_delete_admin on public.order_items;
 create policy order_items_delete_admin on public.order_items
 for delete to authenticated
 using (public.has_store_role(store_id, array['owner', 'admin']));
+
+-- Explicit table privileges complement RLS policies; grants alone never bypass RLS.
+grant select on public.stores, public.products to anon, authenticated;
+grant insert, update, delete on public.stores to authenticated;
+grant insert, update, delete on public.products to authenticated;
+grant select, insert, update, delete on public.store_memberships to authenticated;
+grant select, insert, update, delete on public.orders, public.order_items to authenticated;
