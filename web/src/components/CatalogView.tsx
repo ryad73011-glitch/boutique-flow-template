@@ -9,6 +9,9 @@ interface CatalogViewProps {
   onSelectProduct: (product: Product) => void;
 }
 
+const normalizeSearchText = (value: string) =>
+  value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLocaleLowerCase();
+
 export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProduct }) => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,13 +29,10 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
   const filteredProducts = useMemo(() => {
     const matches = PRODUCTS.filter((product) => {
       const matchCat = selectedCategory === 'all' || product.category === selectedCategory;
-      const q = searchQuery.toLowerCase().trim();
-      const matchQuery = !q ||
-        product.nameFr.toLowerCase().includes(q) ||
-        product.nameAr.includes(q) ||
-        product.reference.toLowerCase().includes(q) ||
-        product.subtitleFr.toLowerCase().includes(q) ||
-        product.subtitleAr.includes(q);
+      const q = normalizeSearchText(searchQuery.trim());
+      const searchable = [product.nameFr, product.nameAr, product.reference, product.subtitleFr, product.subtitleAr]
+        .map(normalizeSearchText);
+      const matchQuery = !q || searchable.some((field) => field.includes(q));
       return matchCat && matchQuery;
     });
 
@@ -70,6 +70,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
       <div style={{ maxWidth: '600px', margin: '0 auto 24px' }}>
         <input
           type="text"
+          aria-label={t.searchPlaceholder}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t.searchPlaceholder}
@@ -151,6 +152,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
             onClick={() => {
               setSelectedCategory('all');
               setSearchQuery('');
+              setSortOrder('featured');
             }}
             style={{
               backgroundColor: 'var(--color-gold-accent)',
