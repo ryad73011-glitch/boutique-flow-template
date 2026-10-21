@@ -70,7 +70,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
           <div style={{ fontSize: '24px', marginBottom: '8px' }}>💬</div>
           <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>WhatsApp</strong>
           <span style={{ fontSize: '13px', color: '#aaa' }}>{WHATSAPP_PHONE}</span>
-          {!storeConfig.whatsappConfigured && <span style={{ display: 'block', fontSize: '11px', color: '#e6cba3', marginTop: '8px' }}>{language === 'ar' ? 'رقم المتجر غير مُعدّ في النسخة التجريبية' : 'Numéro à configurer pour ce magasin'}</span>
+          {!storeConfig.whatsappConfigured && <span style={{ display: 'block', fontSize: '11px', color: '#e6cba3', marginTop: '8px' }}>{language === 'ar' ? 'رقم المتجر غير مُعدّ في النسخة التجريبية' : 'Numéro à configurer pour ce magasin'}</span>}
         </a>
 
         <a
