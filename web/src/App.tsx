@@ -49,6 +49,40 @@ export const App: React.FC = () => {
     }
   }, [cartItems]);
 
+  useEffect(() => {
+    const isArabic = language === 'ar';
+    document.documentElement.lang = language;
+    document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+    document.title = `${isArabic ? 'متجر' : 'Boutique'} — ${isArabic ? translations.ar.brandName : translations.fr.brandName}`;
+
+    const description = isArabic
+      ? `${translations.ar.brandName} — ${translations.ar.brandTagline}. اكتشف التشكيلة وتواصل مع المتجر لطلب المنتجات.`
+      : `${translations.fr.brandName} — ${translations.fr.brandTagline}. Découvrez la collection et contactez la boutique pour vos demandes.`;
+    let descriptionTag = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!descriptionTag) {
+      descriptionTag = document.createElement('meta');
+      descriptionTag.name = 'description';
+      document.head.appendChild(descriptionTag);
+    }
+    descriptionTag.content = description;
+
+    let ogTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]');
+    if (!ogTitle) {
+      ogTitle = document.createElement('meta');
+      ogTitle.setAttribute('property', 'og:title');
+      document.head.appendChild(ogTitle);
+    }
+    ogTitle.content = document.title;
+
+    let ogDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]');
+    if (!ogDescription) {
+      ogDescription = document.createElement('meta');
+      ogDescription.setAttribute('property', 'og:description');
+      document.head.appendChild(ogDescription);
+    }
+    ogDescription.content = description;
+  }, [language]);
+
   const addToCart = (product: Product, size: string) => {
     setCartItems((items) => {
       const existing = items.find((item) => item.product.id === product.id && item.size === size);
