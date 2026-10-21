@@ -69,6 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
             <li><button onClick={() => onNavigate('catalog')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navCatalog}</button></li>
             <li><button onClick={() => onNavigate('about')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navAbout}</button></li>
             <li><button onClick={() => onNavigate('contact')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navContact}</button></li>
+            <li><button onClick={() => onNavigate('info')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navInfo}</button></li>
           </ul>
         </div>
 
