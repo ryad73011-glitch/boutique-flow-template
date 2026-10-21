@@ -1,9 +1,10 @@
 import { Product } from '../types';
+import { storeConfig } from './storeConfig';
 
-export const WHATSAPP_PHONE = '+213555123456';
-export const ATELIER_PHONE = '+213 21 60 45 80';
-export const ATELIER_ADDRESS_FR = '14 Rue Sidi Yahia, Hydra, Alger, Algérie';
-export const ATELIER_ADDRESS_AR = '14 شارع سيدي يحيى، حيدرة، الجزائر العاصمة';
+export const WHATSAPP_PHONE = storeConfig.whatsappDisplay;
+export const ATELIER_PHONE = storeConfig.atelierPhone;
+export const ATELIER_ADDRESS_FR = storeConfig.addressFr;
+export const ATELIER_ADDRESS_AR = storeConfig.addressAr;
 
 export const PRODUCTS: Product[] = [
   {
@@ -92,7 +93,7 @@ export function formatPrice(price: number, lang: 'fr' | 'ar'): string {
 export function buildWhatsAppLink(product: Product, size: string, lang: 'fr' | 'ar'): string {
   const message = lang === 'ar'
     ? `السلام عليكم دار الجزائر،\n\nأود طلب قطعة: ${product.nameAr}\nالمرجع: ${product.reference}\nالمقاس المطلوب: ${size}\nالسعر: ${formatPrice(product.priceDzd, lang)}\n\nيرجى تزويدي بتفاصيل التوصيل والحجز. شكراً.`
-    : `Bonjour Maison El Djazair,\n\nJe souhaite commander la pièce suivante :\n- Modèle : ${product.nameFr}\n- Référence : ${product.reference}\n- Taille : ${size}\n- Prix : ${formatPrice(product.priceDzd, lang)}\n\nMerci de m'indiquer les délais et modalités !`;
+    : `Bonjour ${storeConfig.name},\n\nJe souhaite commander la pièce suivante :\n- Modèle : ${product.nameFr}\n- Référence : ${product.reference}\n- Taille : ${size}\n- Prix : ${formatPrice(product.priceDzd, lang)}\n\nMerci de m'indiquer les délais et modalités !`;
 
-  return `https://wa.me/${WHATSAPP_PHONE.replace('+', '')}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${storeConfig.whatsappPhone}?text=${encodeURIComponent(message)}`;
 }
