@@ -55,7 +55,7 @@ export const translations = {
     rights: 'Tous droits réservés.'
   },
   ar: {
-    brandName: storeConfig.name,
+    brandName: storeConfig.nameAr,
     brandTagline: storeConfig.taglineAr,
     navHome: 'الرئيسية',
     navCatalog: 'التشكيلة',
