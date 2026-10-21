@@ -34,7 +34,9 @@ Les variables `VITE_*` sont intégrées au code envoyé au navigateur : n'y plac
 
 ## Commandes et limites
 
-- Le panier accepte plusieurs produits et tailles, permet de modifier les quantités, et reste mémorisé dans le navigateur sur cet appareil.
+- Le panier accepte plusieurs produits et tailles, permet de modifier les quantités, de retirer un article ou de vider le panier, et reste mémorisé dans le navigateur sur cet appareil.
+- La recherche du catalogue ignore les accents français et les filtres peuvent être réinitialisés.
+- Le titre de page et les métadonnées de partage sont adaptés à la langue et au nom configuré du magasin.
 - Avant d’ouvrir WhatsApp, le client renseigne son nom, téléphone, wilaya et adresse ; les champs sont validés côté navigateur puis ajoutés au récapitulatif de demande.
 - Par sécurité, le numéro WhatsApp est vide par défaut : la commande est désactivée dans la démo jusqu’à ce que le propriétaire configure `VITE_WHATSAPP_PHONE` avec son vrai numéro international (chiffres uniquement).
 - La validation du panier prépare un récapitulatif multiligne via WhatsApp avec les quantités et un total estimatif ; le client doit vérifier puis envoyer lui-même le message.
