@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Language, Product } from '../types';
 import { formatPrice } from '../data/products';
 import { storeConfig } from '../data/storeConfig';
@@ -21,6 +21,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   items, language, onClose, onRemove, onChangeQuantity
 }) => {
   const isArabic = language === 'ar';
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [wilaya, setWilaya] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
   const total = items.reduce((sum, item) => sum + item.product.priceDzd * item.quantity, 0);
   const message = isArabic
     ? [
@@ -29,7 +33,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         ...items.map((item) => `• ${item.product.nameAr} — المقاس ${item.size} × ${item.quantity} — ${formatPrice(item.product.priceDzd * item.quantity, language)}`),
         '',
         `المجموع التقديري: ${formatPrice(total, language)}`,
-        'يرجى تأكيد التوفر والتوصيل. هذا طلب استفسار وليس دفعًا إلكترونيًا.'
+        '',
+        `الاسم: ${customerName}`,
+        `الهاتف: ${customerPhone}`,
+        `الولاية: ${wilaya}`,
+        `عنوان التوصيل: ${deliveryAddress}`,
+        'يرجى تأكيد التوفر وتكاليف ومدة التوصيل. هذا طلب استفسار وليس دفعًا إلكترونيًا.'
       ].join('\n')
     : [
         `Bonjour ${storeConfig.name}, je souhaite confirmer cette demande de commande :`,
@@ -37,7 +46,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         ...items.map((item) => `• ${item.product.nameFr} — taille ${item.size} × ${item.quantity} — ${formatPrice(item.product.priceDzd * item.quantity, language)}`),
         '',
         `Total estimatif : ${formatPrice(total, language)}`,
-        'Merci de confirmer la disponibilité et la livraison. Ceci est une demande, pas un paiement en ligne.'
+        '',
+        `Client : ${customerName}`,
+        `Téléphone : ${customerPhone}`,
+        `Wilaya : ${wilaya}`,
+        `Adresse de livraison : ${deliveryAddress}`,
+        'Merci de confirmer la disponibilité, les frais et le délai de livraison. Ceci est une demande, pas un paiement en ligne.'
       ].join('\n');
   const checkoutUrl = `https://wa.me/${storeConfig.whatsappPhone}?text=${encodeURIComponent(message)}`;
 
@@ -81,7 +95,22 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </div>
               <p style={{ color: '#aaa', fontSize: '12px', marginBottom: '14px' }}>{isArabic ? 'لا يوجد دفع إلكتروني. سيفتح WhatsApp برسالة جاهزة، ويجب عليك الضغط على إرسال بعد تأكيد التفاصيل.' : 'Pas de paiement en ligne. WhatsApp s’ouvrira avec un message à vérifier puis à envoyer.'}</p>
               {storeConfig.whatsappConfigured ? (
-                <a href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={onClose} style={{ display: 'block', textAlign: 'center', padding: '14px', borderRadius: '6px', background: 'var(--color-gold-accent)', color: 'var(--color-charcoal-900)', textDecoration: 'none', fontWeight: 700 }}>{isArabic ? 'متابعة الطلب عبر WhatsApp' : 'Continuer sur WhatsApp'}</a>
+                <form onSubmit={(event) => { event.preventDefault(); window.open(checkoutUrl, '_blank', 'noopener,noreferrer'); onClose(); }} style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                  <h3 style={{ fontSize: '15px', fontWeight: 700 }}>{isArabic ? 'معلومات التوصيل' : 'Informations de livraison'}</h3>
+                  <label style={fieldLabelStyle}>{isArabic ? 'الاسم الكامل' : 'Nom complet'}
+                    <input required maxLength={100} autoComplete="name" value={customerName} onChange={(event) => setCustomerName(event.target.value)} style={fieldInputStyle} />
+                  </label>
+                  <label style={fieldLabelStyle}>{isArabic ? 'رقم الهاتف' : 'Téléphone'}
+                    <input required type="tel" maxLength={30} autoComplete="tel" value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} style={fieldInputStyle} />
+                  </label>
+                  <label style={fieldLabelStyle}>{isArabic ? 'الولاية' : 'Wilaya'}
+                    <input required maxLength={80} autoComplete="address-level1" value={wilaya} onChange={(event) => setWilaya(event.target.value)} style={fieldInputStyle} />
+                  </label>
+                  <label style={fieldLabelStyle}>{isArabic ? 'عنوان التوصيل' : 'Adresse de livraison'}
+                    <textarea required maxLength={300} autoComplete="street-address" value={deliveryAddress} onChange={(event) => setDeliveryAddress(event.target.value)} rows={2} style={{ ...fieldInputStyle, resize: 'vertical' }} />
+                  </label>
+                  <button type="submit" style={{ display: 'block', textAlign: 'center', padding: '14px', border: 0, borderRadius: '6px', background: 'var(--color-gold-accent)', color: 'var(--color-charcoal-900)', fontWeight: 700, cursor: 'pointer' }}>{isArabic ? 'متابعة الطلب عبر WhatsApp' : 'Continuer sur WhatsApp'}</button>
+                </form>
               ) : (
                 <p role="status" style={{ textAlign: 'center', padding: '14px', borderRadius: '6px', border: '1px solid var(--color-charcoal-600)', color: '#e6cba3', fontSize: '13px' }}>{isArabic ? 'هذه نسخة تجريبية. يجب على صاحب المتجر إعداد رقم WhatsApp الحقيقي قبل تفعيل الطلبات.' : 'Version de démonstration : le propriétaire doit configurer un vrai numéro WhatsApp avant d’activer les commandes.'}</p>
               )}
@@ -97,3 +126,7 @@ const quantityButtonStyle: React.CSSProperties = {
   width: '28px', height: '28px', borderRadius: '4px', border: '1px solid var(--color-charcoal-600)',
   background: 'var(--color-charcoal-800)', color: 'var(--color-warm-cream)', cursor: 'pointer'
 };
+
+
+const fieldLabelStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#d0c9be' };
+const fieldInputStyle: React.CSSProperties = { width: '100%', boxSizing: 'border-box', padding: '10px 11px', borderRadius: '5px', border: '1px solid var(--color-charcoal-600)', background: 'var(--color-charcoal-800)', color: 'var(--color-warm-cream)', fontSize: '14px' };
