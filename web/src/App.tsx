@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Page, Language, Product } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -8,6 +8,7 @@ import { AboutView } from './components/AboutView';
 import { ContactView } from './components/ContactView';
 import { ProductCard } from './components/ProductCard';
 import { ProductDetailModal } from './components/ProductDetailModal';
+import { CartDrawer, CartItem } from './components/CartDrawer';
 import { PRODUCTS } from './data/products';
 import { translations } from './translations';
 
@@ -15,6 +16,51 @@ export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [language, setLanguage] = useState<Language>('fr');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('boutique-flow-cart-v1');
+      return saved ? (JSON.parse(saved) as CartItem[]) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [cartOpen, setCartOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('boutique-flow-cart-v1', JSON.stringify(cartItems));
+    } catch {
+      // The cart remains usable for this session if browser storage is unavailable.
+    }
+  }, [cartItems]);
+
+  const addToCart = (product: Product, size: string) => {
+    setCartItems((items) => {
+      const existing = items.find((item) => item.product.id === product.id && item.size === size);
+      if (existing) {
+        return items.map((item) => item.product.id === product.id && item.size === size
+          ? { ...item, quantity: item.quantity + 1 }
+          : item);
+      }
+      return [...items, { product, size, quantity: 1 }];
+    });
+    setSelectedProduct(null);
+    setCartOpen(true);
+  };
+
+  const removeFromCart = (productId: string, size: string) => {
+    setCartItems((items) => items.filter((item) => !(item.product.id === productId && item.size === size)));
+  };
+
+  const changeCartQuantity = (productId: string, size: string, quantity: number) => {
+    if (quantity < 1) {
+      removeFromCart(productId, size);
+      return;
+    }
+    setCartItems((items) => items.map((item) => item.product.id === productId && item.size === size
+      ? { ...item, quantity: Math.min(quantity, 99) }
+      : item));
+  };
 
   const t = translations[language];
   const featuredProducts = PRODUCTS.filter((p) => p.isFeatured);
@@ -43,6 +89,13 @@ export const App: React.FC = () => {
         onNavigate={setCurrentPage}
         onToggleLanguage={toggleLanguage}
       />
+
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 16px', background: 'var(--color-charcoal-800)', borderBottom: '1px solid var(--color-charcoal-700)' }}>
+        <button type="button" onClick={() => setCartOpen(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', border: '1px solid var(--color-gold-accent)', background: 'transparent', color: 'var(--color-warm-cream)', borderRadius: '24px', padding: '8px 16px', cursor: 'pointer', fontSize: '13px' }} aria-label={language === 'ar' ? `فتح السلة، ${cartItems.reduce((sum, item) => sum + item.quantity, 0)} منتجات` : `Ouvrir le panier, ${cartItems.reduce((sum, item) => sum + item.quantity, 0)} articles`}>
+          <span>{language === 'ar' ? 'سلة المشتريات' : 'Panier'}</span>
+          <span style={{ minWidth: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: 'var(--color-gold-accent)', color: 'var(--color-charcoal-900)', fontWeight: 700 }}>{cartItems.reduce((sum, item) => sum + item.quantity, 0)}</span>
+        </button>
+      </div>
 
       <main style={{ flex: 1 }}>
         {currentPage === 'home' && (
@@ -133,10 +186,21 @@ export const App: React.FC = () => {
           product={selectedProduct}
           language={language}
           onClose={() => setSelectedProduct(null)}
+          onAddToCart={addToCart}
         />
       )}
 
       <Footer language={language} onNavigate={setCurrentPage} />
+
+      {cartOpen && (
+        <CartDrawer
+          items={cartItems}
+          language={language}
+          onClose={() => setCartOpen(false)}
+          onRemove={removeFromCart}
+          onChangeQuantity={changeCartQuantity}
+        />
+      )}
     </div>
   );
 };
