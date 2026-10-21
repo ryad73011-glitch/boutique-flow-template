@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Language, Product } from '../types';
 import { formatPrice } from '../data/products';
 import { storeConfig } from '../data/storeConfig';
@@ -26,6 +26,19 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const [customerPhone, setCustomerPhone] = useState('');
   const [wilaya, setWilaya] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const total = items.reduce((sum, item) => sum + item.product.priceDzd * item.quantity, 0);
   const message = isArabic
     ? [
@@ -58,9 +71,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   return (
     <div role="presentation" onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 150, background: 'rgba(0,0,0,.72)', display: 'flex', justifyContent: isArabic ? 'flex-start' : 'flex-end' }}>
-      <aside role="dialog" aria-modal="true" aria-label={isArabic ? 'سلة المشتريات' : 'Panier'} dir={isArabic ? 'rtl' : 'ltr'} onClick={(event) => event.stopPropagation()} style={{ width: 'min(100%, 440px)', height: '100%', overflowY: 'auto', background: 'var(--color-charcoal-900)', borderInlineStart: '1px solid var(--color-charcoal-600)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+      <aside role="dialog" aria-modal="true" aria-labelledby="cart-dialog-title" dir={isArabic ? 'rtl' : 'ltr'} onClick={(event) => event.stopPropagation()} style={{ width: 'min(100%, 440px)', height: '100%', overflowY: 'auto', background: 'var(--color-charcoal-900)', borderInlineStart: '1px solid var(--color-charcoal-600)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px' }}>{isArabic ? 'سلة المشتريات' : 'Votre panier'}</h2>
+          <h2 id="cart-dialog-title" style={{ fontFamily: 'var(--font-serif)', fontSize: '24px' }}>{isArabic ? 'سلة المشتريات' : 'Votre panier'}</h2>
           <button type="button" onClick={onClose} aria-label={isArabic ? 'إغلاق السلة' : 'Fermer le panier'} style={{ background: 'transparent', border: '1px solid var(--color-charcoal-600)', color: 'var(--color-warm-cream)', borderRadius: '6px', padding: '8px 12px', cursor: 'pointer' }}>✕</button>
         </header>
 
