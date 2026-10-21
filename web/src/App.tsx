@@ -54,7 +54,7 @@ export const App: React.FC = () => {
       const existing = items.find((item) => item.product.id === product.id && item.size === size);
       if (existing) {
         return items.map((item) => item.product.id === product.id && item.size === size
-          ? { ...item, quantity: item.quantity + 1 }
+          ? { ...item, quantity: Math.min(item.quantity + 1, 99) }
           : item);
       }
       return [...items, { product, size, quantity: 1 }];
