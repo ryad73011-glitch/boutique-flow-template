@@ -86,8 +86,9 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
           }}
         >
           <div style={{ fontSize: '24px', marginBottom: '8px' }}>📞</div>
-          <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>Téléphone Atelier</strong>
+          <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>{language === 'ar' ? 'هاتف الورشة' : 'Téléphone Atelier'}</strong>
           <span style={{ fontSize: '13px', color: '#aaa' }}>{ATELIER_PHONE}</span>
+          {!storeConfig.atelierPhoneConfigured && <span style={{ display: 'block', fontSize: '11px', color: '#e6cba3', marginTop: '8px' }}>{language === 'ar' ? 'رقم الهاتف غير مُعدّ في النسخة التجريبية' : 'Numéro à configurer pour ce magasin'}</span>}
         </a>
 
         <div style={{
