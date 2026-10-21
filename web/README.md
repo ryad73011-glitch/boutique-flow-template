@@ -33,7 +33,9 @@ Les variables `VITE_*` sont intégrées au code envoyé au navigateur : n'y plac
 
 ## Commandes et limites
 
-- Les boutons de produit préparent un message WhatsApp contenant la référence, le prix et la taille sélectionnée.
+- Le panier accepte plusieurs produits et tailles, permet de modifier les quantités, et reste mémorisé dans le navigateur sur cet appareil.
+- La validation du panier prépare un récapitulatif multiligne via WhatsApp avec les quantités et un total estimatif ; le client doit vérifier puis envoyer lui-même le message.
+- Les boutons de produit préparent aussi un message WhatsApp contenant la référence, le prix et la taille sélectionnée.
 - Le formulaire de contact prépare un message dans WhatsApp. **Le client doit lui-même appuyer sur Envoyer** ; le site n'expédie pas les messages automatiquement.
 - Aucun paiement en ligne, gestion de stock réelle, compte client, tableau de bord commerçant ou stockage serveur n'est implémenté dans ce modèle.
 - Le catalogue est local et les coordonnées/produits de départ sont fictifs. Vérifiez les prix, disponibilités, coordonnées, livraison, retours et conditions commerciales avec le commerçant avant publication.
