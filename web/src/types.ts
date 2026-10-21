@@ -22,4 +22,4 @@ export interface Product {
   isFeatured?: boolean;
 }
 
-export type Page = 'home' | 'catalog' | 'about' | 'contact';
+export type Page = 'home' | 'catalog' | 'about' | 'contact' | 'info';

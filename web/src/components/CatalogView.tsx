@@ -9,9 +9,13 @@ interface CatalogViewProps {
   onSelectProduct: (product: Product) => void;
 }
 
+const normalizeSearchText = (value: string) =>
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
+
 export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProduct }) => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState<'featured' | 'price-asc' | 'price-desc' | 'name'>('featured');
   const t = translations[language];
 
   const categories: { id: Category; label: string }[] = [
@@ -23,18 +27,26 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
   ];
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    const matches = PRODUCTS.filter((product) => {
       const matchCat = selectedCategory === 'all' || product.category === selectedCategory;
-      const q = searchQuery.toLowerCase().trim();
-      const matchQuery = !q ||
-        product.nameFr.toLowerCase().includes(q) ||
-        product.nameAr.includes(q) ||
-        product.reference.toLowerCase().includes(q) ||
-        product.subtitleFr.toLowerCase().includes(q) ||
-        product.subtitleAr.includes(q);
+      const q = normalizeSearchText(searchQuery.trim());
+      const searchable = [product.nameFr, product.nameAr, product.reference, product.subtitleFr, product.subtitleAr]
+        .map(normalizeSearchText);
+      const matchQuery = !q || searchable.some((field) => field.includes(q));
       return matchCat && matchQuery;
     });
-  }, [selectedCategory, searchQuery]);
+
+    return [...matches].sort((a, b) => {
+      if (sortOrder === 'price-asc') return a.priceDzd - b.priceDzd;
+      if (sortOrder === 'price-desc') return b.priceDzd - a.priceDzd;
+      if (sortOrder === 'name') {
+        const nameA = language === 'ar' ? a.nameAr : a.nameFr;
+        const nameB = language === 'ar' ? b.nameAr : b.nameFr;
+        return nameA.localeCompare(nameB, language === 'ar' ? 'ar' : 'fr');
+      }
+      return Number(Boolean(b.isFeatured)) - Number(Boolean(a.isFeatured));
+    });
+  }, [selectedCategory, searchQuery, sortOrder, language]);
 
   return (
     <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px 80px' }}>
@@ -58,6 +70,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
       <div style={{ maxWidth: '600px', margin: '0 auto 24px' }}>
         <input
           type="text"
+          aria-label={t.searchPlaceholder}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t.searchPlaceholder}
@@ -72,6 +85,22 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
             outline: 'none'
           }}
         />
+      </div>
+
+      <div style={{ maxWidth: '600px', margin: '0 auto 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        <label htmlFor="catalog-sort" style={{ color: '#aaa', fontSize: '13px' }}>{t.sortLabel}</label>
+        <select
+          id="catalog-sort"
+          value={sortOrder}
+          onChange={(event) => setSortOrder(event.target.value as typeof sortOrder)}
+          style={{ flex: 1, minWidth: '180px', padding: '12px', backgroundColor: 'var(--color-charcoal-800)', border: '1px solid var(--color-charcoal-600)', borderRadius: '8px', color: 'var(--color-warm-cream)', fontSize: '13px' }}
+        >
+          <option value="featured">{t.sortFeatured}</option>
+          <option value="price-asc">{t.sortPriceAsc}</option>
+          <option value="price-desc">{t.sortPriceDesc}</option>
+          <option value="name">{t.sortName}</option>
+        </select>
+        <span aria-live="polite" style={{ color: '#aaa', fontSize: '12px' }}>{filteredProducts.length} {t.resultsLabel}</span>
       </div>
 
       {/* Category Pills */}
@@ -123,6 +152,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ language, onSelectProd
             onClick={() => {
               setSelectedCategory('all');
               setSearchQuery('');
+              setSortOrder('featured');
             }}
             style={{
               backgroundColor: 'var(--color-gold-accent)',

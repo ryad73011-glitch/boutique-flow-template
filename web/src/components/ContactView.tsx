@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../translations';
 import { WHATSAPP_PHONE, ATELIER_PHONE } from '../data/products';
+import { storeConfig } from '../data/storeConfig';
 
 interface ContactViewProps {
   language: Language;
@@ -17,9 +18,15 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim() && phone.trim()) {
-      setSubmitted(true);
-    }
+    if (!name.trim() || !phone.trim() || !storeConfig.whatsappConfigured) return;
+
+    const body = language === 'ar'
+      ? `طلب تواصل من الموقع\nالاسم: ${name.trim()}\nالهاتف: ${phone.trim()}\nالرسالة: ${message.trim() || 'لا توجد رسالة إضافية'}`
+      : `Demande de contact depuis le site\nNom : ${name.trim()}\nTéléphone : ${phone.trim()}\nMessage : ${message.trim() || 'Aucun message complémentaire'}`;
+
+    const url = `https://wa.me/${WHATSAPP_PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(body)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    setSubmitted(true);
   };
 
   return (
@@ -39,7 +46,6 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </p>
       </div>
 
-      {/* Direct Contact Cards */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
@@ -47,7 +53,8 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         marginBottom: '40px'
       }}>
         <a
-          href={`https://wa.me/${WHATSAPP_PHONE.replace('+', '')}`}
+          href={storeConfig.whatsappConfigured ? `https://wa.me/${WHATSAPP_PHONE.replace(/\D/g, '')}` : undefined}
+          aria-disabled={!storeConfig.whatsappConfigured}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -63,10 +70,12 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
           <div style={{ fontSize: '24px', marginBottom: '8px' }}>💬</div>
           <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>WhatsApp</strong>
           <span style={{ fontSize: '13px', color: '#aaa' }}>{WHATSAPP_PHONE}</span>
+          {!storeConfig.whatsappConfigured && <span style={{ display: 'block', fontSize: '11px', color: '#e6cba3', marginTop: '8px' }}>{language === 'ar' ? 'رقم المتجر غير مُعدّ في النسخة التجريبية' : 'Numéro à configurer pour ce magasin'}</span>}
         </a>
 
         <a
-          href={`tel:${ATELIER_PHONE.replace(/\s+/g, '')}`}
+          href={storeConfig.atelierPhoneConfigured ? `tel:${ATELIER_PHONE.replace(/\s+/g, '')}` : undefined}
+          aria-disabled={!storeConfig.atelierPhoneConfigured}
           style={{
             padding: '20px',
             backgroundColor: 'var(--color-charcoal-800)',
@@ -78,8 +87,9 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
           }}
         >
           <div style={{ fontSize: '24px', marginBottom: '8px' }}>📞</div>
-          <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>Téléphone Atelier</strong>
+          <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>{language === 'ar' ? 'هاتف الورشة' : 'Téléphone Atelier'}</strong>
           <span style={{ fontSize: '13px', color: '#aaa' }}>{ATELIER_PHONE}</span>
+          {!storeConfig.atelierPhoneConfigured && <span style={{ display: 'block', fontSize: '11px', color: '#e6cba3', marginTop: '8px' }}>{language === 'ar' ? 'رقم الهاتف غير مُعدّ في النسخة التجريبية' : 'Numéro à configurer pour ce magasin'}</span>}
         </a>
 
         <div style={{
@@ -95,7 +105,6 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </div>
       </div>
 
-      {/* Form */}
       <div style={{
         backgroundColor: 'var(--color-charcoal-800)',
         border: '1px solid var(--color-charcoal-700)',
@@ -104,9 +113,15 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
       }}>
         {submitted ? (
           <div style={{ textAlign: 'center', padding: '24px' }}>
-            <div style={{ fontSize: '36px', color: 'var(--color-gold-accent)', marginBottom: '12px' }}>✓</div>
-            <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>{t.formSuccessTitle}</h3>
-            <p style={{ fontSize: '14px', color: '#aaa', marginBottom: '20px' }}>{t.formSuccessDesc}</p>
+            <div style={{ fontSize: '36px', color: 'var(--color-gold-accent)', marginBottom: '12px' }}>↗</div>
+            <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>
+              {language === 'ar' ? 'تم فتح WhatsApp' : 'WhatsApp a été ouvert'}
+            </h3>
+            <p style={{ fontSize: '14px', color: '#aaa', marginBottom: '20px' }}>
+              {language === 'ar'
+                ? 'الرسالة محضّرة فقط. راجعها واضغط إرسال داخل WhatsApp؛ لم يتم إرسالها من الموقع.'
+                : 'Le message est seulement préparé. Vérifiez-le puis appuyez sur Envoyer dans WhatsApp ; le site ne l’a pas envoyé.'}
+            </p>
             <button
               onClick={() => {
                 setSubmitted(false);
@@ -123,7 +138,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
                 cursor: 'pointer'
               }}
             >
-              {language === 'ar' ? 'طلب جديد' : 'Nouveau message'}
+              {language === 'ar' ? 'رسالة جديدة' : 'Nouveau message'}
             </button>
           </div>
         ) : (
@@ -192,8 +207,10 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
               />
             </div>
 
+            {!storeConfig.whatsappConfigured && <p role="status" style={{ fontSize: '12px', color: '#e6cba3' }}>{language === 'ar' ? 'نموذج التواصل غير مفعّل في العرض التجريبي. أضف رقم WhatsApp حقيقيًا في إعدادات المتجر.' : 'Le formulaire est désactivé en démo. Configurez le vrai numéro WhatsApp dans les paramètres du magasin.'}</p>}
             <button
               type="submit"
+              disabled={!storeConfig.whatsappConfigured}
               style={{
                 backgroundColor: 'var(--color-gold-accent)',
                 color: 'var(--color-charcoal-900)',
@@ -206,7 +223,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
                 marginTop: '8px'
               }}
             >
-              {t.submit}
+              {language === 'ar' ? 'متابعة عبر WhatsApp' : 'Continuer sur WhatsApp'}
             </button>
           </form>
         )}

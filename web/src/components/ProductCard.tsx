@@ -1,7 +1,6 @@
 import React from 'react';
 import { Product, Language } from '../types';
 import { formatPrice } from '../data/products';
-import { translations } from '../translations';
 
 interface ProductCardProps {
   product: Product;
@@ -10,17 +9,26 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, language, onSelect }) => {
-  const t = translations[language];
-
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={language === 'ar' ? `عرض تفاصيل ${product.nameAr}` : `Voir les détails de ${product.nameFr}`}
       onClick={() => onSelect(product)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelect(product);
+        }
+      }}
       style={{
         backgroundColor: 'var(--color-charcoal-800)',
         border: '1px solid var(--color-charcoal-700)',
         borderRadius: '6px',
         overflow: 'hidden',
         cursor: 'pointer',
+        textAlign: language === 'ar' ? 'right' : 'left',
+        color: 'inherit',
         display: 'flex',
         flexDirection: 'column',
         transition: 'transform 0.2s, border-color 0.2s'
@@ -103,9 +111,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, language, onS
       </div>
 
       <style>{`
-        .product-card:hover {
+        .product-card:hover, .product-card:focus-visible {
           transform: translateY(-4px);
           border-color: var(--color-gold-accent);
+          outline: 2px solid var(--color-gold-accent);
+          outline-offset: 3px;
         }
       `}</style>
     </div>

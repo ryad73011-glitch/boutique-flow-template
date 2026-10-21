@@ -1,26 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Product, Language } from '../types';
 import { formatPrice, buildWhatsAppLink, WHATSAPP_PHONE } from '../data/products';
 import { translations } from '../translations';
+import { storeConfig } from '../data/storeConfig';
 
 interface ProductDetailModalProps {
   product: Product;
   language: Language;
   onClose: () => void;
+  onAddToCart: (product: Product, size: string) => void;
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   product,
   language,
-  onClose
+  onClose,
+  onAddToCart
 }) => {
   const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'Standard');
   const t = translations[language];
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const whatsappUrl = buildWhatsAppLink(product, selectedSize, language);
 
   return (
-    <div style={{
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="product-dialog-title"
+      dir={language === 'ar' ? 'rtl' : 'ltr'}
+      style={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -89,7 +110,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             }}>
               REF: {product.reference}
             </span>
-            <h2 style={{
+            <h2 id="product-dialog-title" style={{
               fontFamily: 'var(--font-serif)',
               fontSize: '22px',
               fontWeight: 'bold',
@@ -129,6 +150,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {product.sizes.map((size) => (
                 <button
                   key={size}
+                  type="button"
+                  aria-pressed={selectedSize === size}
                   onClick={() => setSelectedSize(size)}
                   style={{
                     padding: '8px 14px',
@@ -170,7 +193,29 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             </p>
           </div>
 
+          <button
+            type="button"
+            onClick={() => onAddToCart(product, selectedSize)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              backgroundColor: 'transparent',
+              color: 'var(--color-gold-accent)',
+              border: '1px solid var(--color-gold-accent)',
+              padding: '13px',
+              borderRadius: '6px',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+          >
+            {language === 'ar' ? 'إضافة إلى السلة' : 'Ajouter au panier'}
+          </button>
+
           {/* WhatsApp Action */}
+          {storeConfig.whatsappConfigured ? (
           <a
             href={whatsappUrl}
             target="_blank"
@@ -192,6 +237,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           >
             <span>💬 {t.orderWhatsApp}</span>
           </a>
+          ) : (
+            <p role="status" style={{ fontSize: '12px', textAlign: 'center', color: '#e6cba3' }}>{language === 'ar' ? 'زر الطلب سيتفعّل بعد إعداد رقم المتجر الحقيقي.' : 'La commande sera activée après configuration du vrai numéro WhatsApp du magasin.'}</p>
+          )}
           <span style={{ fontSize: '11px', textAlign: 'center', color: '#888' }}>
             {t.orderWhatsAppSubtitle} ({WHATSAPP_PHONE})
           </span>

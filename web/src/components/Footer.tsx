@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
           }}>
             {language === 'ar'
               ? 'دار أزياء جزائرية راقية مكرسة لإحياء فن الكاراكو، القفطان والأزياء الملكية التراثية بأنامل أمهر حرفيات العاصمة.'
-              : 'Maison de haute couture algérienne dédiée à la sublimation du costume traditionnel, du Karakou impérial et du sur-mesure d'exception.'}
+              : "Maison de haute couture algérienne dédiée à la sublimation du costume traditionnel, du Karakou impérial et du sur-mesure d'exception."}
           </p>
         </div>
 
@@ -69,6 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
             <li><button onClick={() => onNavigate('catalog')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navCatalog}</button></li>
             <li><button onClick={() => onNavigate('about')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navAbout}</button></li>
             <li><button onClick={() => onNavigate('contact')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navContact}</button></li>
+            <li><button onClick={() => onNavigate('info')} style={{ background: 'none', border: 'none', color: '#a09fa6', cursor: 'pointer' }}>{t.navInfo}</button></li>
           </ul>
         </div>
 
