@@ -31,7 +31,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, []);
 
   const whatsappUrl = buildWhatsAppLink(product, selectedSize, language);
 
