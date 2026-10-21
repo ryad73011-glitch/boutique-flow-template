@@ -6,6 +6,7 @@ import { Hero } from './components/Hero';
 import { CatalogView } from './components/CatalogView';
 import { AboutView } from './components/AboutView';
 import { ContactView } from './components/ContactView';
+import { StoreInfoView } from './components/StoreInfoView';
 import { ProductCard } from './components/ProductCard';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { CartDrawer, CartItem } from './components/CartDrawer';
@@ -192,6 +193,8 @@ export const App: React.FC = () => {
             language={language}
           />
         )}
+
+        {currentPage === 'info' && <StoreInfoView language={language} />}
       </main>
 
       {/* Product Detail Modal */}
