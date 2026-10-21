@@ -19,7 +19,21 @@ export const App: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('boutique-flow-cart-v1');
-      return saved ? (JSON.parse(saved) as CartItem[]) : [];
+      if (!saved) return [];
+      const parsed: unknown = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+
+      // Treat browser storage as untrusted. Rebuild each item from the current catalog
+      // so edited/stale localStorage cannot change displayed product prices or details.
+      return parsed.flatMap((entry): CartItem[] => {
+        if (!entry || typeof entry !== 'object') return [];
+        const candidate = entry as { product?: { id?: unknown }; size?: unknown; quantity?: unknown };
+        const product = PRODUCTS.find((item) => item.id === candidate.product?.id);
+        const size = typeof candidate.size === 'string' ? candidate.size : '';
+        const quantity = Number(candidate.quantity);
+        if (!product || !product.sizes.includes(size) || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) return [];
+        return [{ product, size, quantity }];
+      });
     } catch {
       return [];
     }
