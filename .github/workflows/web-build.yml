@@ -1,0 +1,41 @@
+name: Web build
+
+on:
+  push:
+    branches:
+      - main
+      - "feat/**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: TypeScript and Vite production build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package.json
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Type-check and build
+        run: npm run build
+      - name: Verify production entry point
+        run: test -s dist/index.html
