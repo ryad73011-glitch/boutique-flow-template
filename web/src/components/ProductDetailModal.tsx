@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Product, Language } from '../types';
 import { formatPrice, buildWhatsAppLink, WHATSAPP_PHONE } from '../data/products';
 import { translations } from '../translations';
@@ -20,10 +20,28 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'Standard');
   const t = translations[language];
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const whatsappUrl = buildWhatsAppLink(product, selectedSize, language);
 
   return (
-    <div style={{
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="product-dialog-title"
+      dir={language === 'ar' ? 'rtl' : 'ltr'}
+      style={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -92,7 +110,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             }}>
               REF: {product.reference}
             </span>
-            <h2 style={{
+            <h2 id="product-dialog-title" style={{
               fontFamily: 'var(--font-serif)',
               fontSize: '22px',
               fontWeight: 'bold',
