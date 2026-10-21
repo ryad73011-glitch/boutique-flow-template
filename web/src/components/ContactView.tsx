@@ -23,7 +23,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
       ? `طلب تواصل من الموقع\nالاسم: ${name.trim()}\nالهاتف: ${phone.trim()}\nالرسالة: ${message.trim() || 'لا توجد رسالة إضافية'}`
       : `Demande de contact depuis le site\nNom : ${name.trim()}\nTéléphone : ${phone.trim()}\nMessage : ${message.trim() || 'Aucun message complémentaire'}`;
 
-    const url = `https://wa.me/${WHATSAPP_PHONE.replace(/\\D/g, '')}?text=${encodeURIComponent(body)}`;
+    const url = `https://wa.me/${WHATSAPP_PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(body)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     setSubmitted(true);
   };
@@ -52,7 +52,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         marginBottom: '40px'
       }}>
         <a
-          href={`https://wa.me/${WHATSAPP_PHONE.replace(/\\D/g, '')}`}
+          href={`https://wa.me/${WHATSAPP_PHONE.replace(/\D/g, '')}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -71,7 +71,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </a>
 
         <a
-          href={`tel:${ATELIER_PHONE.replace(/\\s+/g, '')}`}
+          href={`tel:${ATELIER_PHONE.replace(/\s+/g, '')}`}
           style={{
             padding: '20px',
             backgroundColor: 'var(--color-charcoal-800)',
