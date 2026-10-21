@@ -1,7 +1,9 @@
+import { storeConfig } from './data/storeConfig';
+
 export const translations = {
   fr: {
-    brandName: 'MAISON EL DJAZAIR',
-    brandTagline: 'HAUTE COUTURE ALGÉRIENNE',
+    brandName: storeConfig.name,
+    brandTagline: storeConfig.taglineFr,
     navHome: 'Accueil',
     navCatalog: 'Collection',
     navAbout: 'La Maison',
@@ -40,7 +42,7 @@ export const translations = {
     aboutSubtitle: 'Depuis des générations, la célébration de la femme algérienne.',
     aboutP1: "Maison El Djazair puise son inspiration dans les palais de la Casbah d'Alger. Chaque pièce est un dialogue harmonieux entre la richesse historique de notre pays et le raffinement de la haute couture internationale.",
     aboutP2: "Nos maîtresses brodeuses perpétuent les points ancestraux de Fetla et Medjboud sur les velours les plus nobles, garantissant un tombé exceptionnel et une élégance intemporelle.",
-    contactTitle: 'Prendre Rendez-vous à l'Atelier',
+    contactTitle: "Prendre rendez-vous à l'atelier",
     contactSubtitle: "Pour un essayage privé, une commande de mariage ou une création sur-mesure.",
     fullName: 'Nom complet',
     phone: 'Numéro de téléphone',
@@ -48,13 +50,13 @@ export const translations = {
     submit: 'Envoyer la demande',
     formSuccessTitle: 'Demande envoyée avec succès',
     formSuccessDesc: 'Notre atelier prendra contact avec vous dans les plus brefs délais.',
-    atelierAddress: '14 Rue Sidi Yahia, Hydra, Alger, Algérie',
-    atelierHours: 'Samedi – Jeudi : 10h00 – 19h30',
+    atelierAddress: storeConfig.addressFr,
+    atelierHours: storeConfig.hoursFr,
     rights: 'Tous droits réservés.'
   },
   ar: {
-    brandName: 'دار الجزائر',
-    brandTagline: 'خياطة راقية جزائرية',
+    brandName: storeConfig.name,
+    brandTagline: storeConfig.taglineAr,
     navHome: 'الرئيسية',
     navCatalog: 'التشكيلة',
     navAbout: 'عن الدار',
@@ -101,8 +103,8 @@ export const translations = {
     submit: 'تأكيد إرسال الطلب',
     formSuccessTitle: 'تم استلام طلبكم بنجاح',
     formSuccessDesc: 'سيتواصل معكم مستشار الدار في أقرب وقت لتأكيد الموعد.',
-    atelierAddress: '14 شارع سيدي يحيى، حيدرة، الجزائر العاصمة',
-    atelierHours: 'السبت – الخميس : 10:00 صباحاً – 07:30 مساءً',
+    atelierAddress: storeConfig.addressAr,
+    atelierHours: storeConfig.hoursAr,
     rights: 'جميع الحقوق محفوظة.'
   }
 };
