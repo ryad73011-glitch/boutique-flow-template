@@ -1,102 +1,43 @@
-# Maison El Djazair — Algerian Haute Couture Boutique (Web App)
+# Boutique en ligne — modèle personnalisable
 
-A premium, responsive clothing boutique web application designed for a luxury Algerian fashion brand specializing in Haute Couture, traditional Karakou, royal caftans, and contemporary ready-to-wear.
+Modèle de boutique React + TypeScript + Vite pour présenter des produits et recevoir des demandes de commande via WhatsApp. Les produits actuels et les coordonnées par défaut sont des **données de démonstration** : remplacez-les avant de remettre le site à un commerçant.
 
----
+## Démarrer
 
-## 🏛️ Brand Aesthetic & Design
-
-- **Color Palette**: Luxury charcoal (`#101012`, `#18181C`), warm cream (`#FAF7F2`, `#F3ECE4`), and restrained antique gold / champagne accents (`#C8A97E`).
-- **Typography**: Editorial serif headings (`Cinzel` / `Amiri`) paired with crisp sans-serif (`Plus Jakarta Sans`).
-- **Bilingual & RTL**: Seamless toggle between **Français (LTR)** and **العربية (RTL)** with native text direction adjustments.
-- **Motion & Accessibility**: Smooth transitions that respect `prefers-reduced-motion` settings, accessible touch targets (min 48px), and responsive mobile layout.
-
----
-
-## 🌟 Key Features
-
-1. **Pages & Views**:
-   - **Home**: Editorial hero presentation, capsule collection banner, craftsmanship pillars, and curated featured garments.
-   - **Catalog**: Complete collection with category filter pills (*Karakou Algérois*, *Caftans Royaux*, *Gandouras Modernes*, *Pochettes & Accessoires*), real-time search, and product count.
-   - **Product Details Modal**: Full editorial photography, reference numbers, size picker (`36` to `Sur-mesure`), pricing in **Algerian Dinars (DZD / د.ج)**, and artisanal craftsmanship specifications.
-   - **About the Brand**: Algerian heritage storytelling (Casbah of Algiers, ancestral *Fetla* and *Medjboud* gold thread needlework, modern atelier in Hydra).
-   - **Atelier & Contact**: Showroom location in Sidi Yahia, Algiers, business hours, and appointment booking form.
-2. **Direct WhatsApp Ordering**:
-   - Every product card and detail modal features a direct WhatsApp order button.
-   - Automatically drafts a pre-filled, localized message containing the product reference, selected size, and price in DZD to the atelier's WhatsApp contact (`+213 555 123 456`).
-3. **No Fake Backend / Honest Architecture**:
-   - Uses local mock data for product inventory, ensuring fast, dependable client-side execution with zero external vendor lock-in.
-
----
-
-## 🚀 Getting Started (Run Outside This Platform)
-
-### Prerequisites
-
-- Node.js (version 18 or newer recommended)
-- npm or pnpm or yarn
-
-### Installation
+Prérequis : Node.js 20 ou 22 et npm.
 
 ```bash
 cd web
 npm install
-```
-
-### Development Server
-
-Run the development server locally:
-
-```bash
 npm run dev
 ```
 
-Open your browser at `http://localhost:3000` to interact with the boutique.
-
-### Production Build
-
-Create an optimized, standard static production bundle:
+Vite affiche l'adresse locale dans le terminal (le port configuré est généralement `3000`). Pour vérifier le site de production :
 
 ```bash
 npm run build
-```
-
-The compiled assets will be in `web/dist/`. You can preview the production build locally:
-
-```bash
 npm run preview
 ```
 
----
+Le résultat de production se trouve dans `web/dist/`.
 
-## 🌐 Deployment Instructions
+## Personnaliser une boutique
 
-The static bundle in `dist/` can be deployed anywhere with zero server-side lock-in:
+1. Copiez `.env.example` vers `.env.local` dans le dossier `web/`.
+2. Remplacez les valeurs `VITE_*` : nom, slogans, WhatsApp au format international avec indicatif pays, téléphone, adresse et horaires.
+3. Modifiez les produits et les prix dans `src/data/products.ts`. Les textes français et arabes de l'interface se trouvent dans `src/translations.ts`.
+4. Remplacez les images de démonstration par les photos du commerçant, avec son autorisation.
+5. Lancez `npm run build` et testez les liens WhatsApp sur téléphone avant livraison.
 
-### Deploy to Vercel
-```bash
-npx vercel
-```
+Les variables `VITE_*` sont intégrées au code envoyé au navigateur : n'y placez jamais de mots de passe, clés privées ou secrets de paiement.
 
-### Deploy to Netlify
-```bash
-npx netlify deploy --prod --dir=dist
-```
+## Commandes et limites
 
-### Deploy to GitHub Pages or Cloudflare Pages
-Upload or link the repository and set:
-- Build command: `npm run build`
-- Output directory: `dist`
+- Les boutons de produit préparent un message WhatsApp contenant la référence, le prix et la taille sélectionnée.
+- Le formulaire de contact prépare un message dans WhatsApp. **Le client doit lui-même appuyer sur Envoyer** ; le site n'expédie pas les messages automatiquement.
+- Aucun paiement en ligne, gestion de stock réelle, compte client, tableau de bord commerçant ou stockage serveur n'est implémenté dans ce modèle.
+- Le catalogue est local et les coordonnées/produits de départ sont fictifs. Vérifiez les prix, disponibilités, coordonnées, livraison, retours et conditions commerciales avec le commerçant avant publication.
 
----
+## Déploiement
 
-## 🔒 Environment Variables
-
-If you configure external APIs or customize the WhatsApp phone number via environment variables, copy `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-And set your desired variables (e.g., `VITE_WHATSAPP_PHONE=+213555123456`).
-Never commit `.env` with real credentials.
+Le dossier `dist/` est un site statique et peut être publié sur Vercel, Netlify ou Cloudflare Pages. Configurez `web` comme dossier de projet, `npm run build` comme commande et `dist` comme répertoire de sortie. Ajoutez les variables `VITE_*` au service d'hébergement avant le build.
