@@ -68,6 +68,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.8.1'
+      - name: Create local debug keystore for CI
+        run: |
+          if [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
       - name: Run unit tests and build debug APK
         run: gradle --no-daemon testDebugUnitTest assembleDebug
       - name: Upload debug APK
