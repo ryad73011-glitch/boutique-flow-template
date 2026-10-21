@@ -17,9 +17,15 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim() && phone.trim()) {
-      setSubmitted(true);
-    }
+    if (!name.trim() || !phone.trim()) return;
+
+    const body = language === 'ar'
+      ? `طلب تواصل من الموقع\nالاسم: ${name.trim()}\nالهاتف: ${phone.trim()}\nالرسالة: ${message.trim() || 'لا توجد رسالة إضافية'}`
+      : `Demande de contact depuis le site\nNom : ${name.trim()}\nTéléphone : ${phone.trim()}\nMessage : ${message.trim() || 'Aucun message complémentaire'}`;
+
+    const url = `https://wa.me/${WHATSAPP_PHONE.replace(/\\D/g, '')}?text=${encodeURIComponent(body)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    setSubmitted(true);
   };
 
   return (
@@ -39,7 +45,6 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </p>
       </div>
 
-      {/* Direct Contact Cards */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
@@ -47,7 +52,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         marginBottom: '40px'
       }}>
         <a
-          href={`https://wa.me/${WHATSAPP_PHONE.replace('+', '')}`}
+          href={`https://wa.me/${WHATSAPP_PHONE.replace(/\\D/g, '')}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -66,7 +71,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </a>
 
         <a
-          href={`tel:${ATELIER_PHONE.replace(/\s+/g, '')}`}
+          href={`tel:${ATELIER_PHONE.replace(/\\s+/g, '')}`}
           style={{
             padding: '20px',
             backgroundColor: 'var(--color-charcoal-800)',
@@ -95,7 +100,6 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         </div>
       </div>
 
-      {/* Form */}
       <div style={{
         backgroundColor: 'var(--color-charcoal-800)',
         border: '1px solid var(--color-charcoal-700)',
@@ -104,9 +108,15 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
       }}>
         {submitted ? (
           <div style={{ textAlign: 'center', padding: '24px' }}>
-            <div style={{ fontSize: '36px', color: 'var(--color-gold-accent)', marginBottom: '12px' }}>✓</div>
-            <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>{t.formSuccessTitle}</h3>
-            <p style={{ fontSize: '14px', color: '#aaa', marginBottom: '20px' }}>{t.formSuccessDesc}</p>
+            <div style={{ fontSize: '36px', color: 'var(--color-gold-accent)', marginBottom: '12px' }}>↗</div>
+            <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>
+              {language === 'ar' ? 'تم فتح WhatsApp' : 'WhatsApp a été ouvert'}
+            </h3>
+            <p style={{ fontSize: '14px', color: '#aaa', marginBottom: '20px' }}>
+              {language === 'ar'
+                ? 'الرسالة محضّرة فقط. راجعها واضغط إرسال داخل WhatsApp؛ لم يتم إرسالها من الموقع.'
+                : 'Le message est seulement préparé. Vérifiez-le puis appuyez sur Envoyer dans WhatsApp ; le site ne l’a pas envoyé.'}
+            </p>
             <button
               onClick={() => {
                 setSubmitted(false);
@@ -123,7 +133,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
                 cursor: 'pointer'
               }}
             >
-              {language === 'ar' ? 'طلب جديد' : 'Nouveau message'}
+              {language === 'ar' ? 'رسالة جديدة' : 'Nouveau message'}
             </button>
           </div>
         ) : (
@@ -206,7 +216,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
                 marginTop: '8px'
               }}
             >
-              {t.submit}
+              {language === 'ar' ? 'متابعة عبر WhatsApp' : 'Continuer sur WhatsApp'}
             </button>
           </form>
         )}
