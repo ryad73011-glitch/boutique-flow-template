@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../translations';
 import { WHATSAPP_PHONE, ATELIER_PHONE } from '../data/products';
+import { storeConfig } from '../data/storeConfig';
 
 interface ContactViewProps {
   language: Language;
@@ -17,7 +18,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim()) return;
+    if (!name.trim() || !phone.trim() || !storeConfig.whatsappConfigured) return;
 
     const body = language === 'ar'
       ? `طلب تواصل من الموقع\nالاسم: ${name.trim()}\nالهاتف: ${phone.trim()}\nالرسالة: ${message.trim() || 'لا توجد رسالة إضافية'}`
@@ -52,7 +53,8 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
         marginBottom: '40px'
       }}>
         <a
-          href={`https://wa.me/${WHATSAPP_PHONE.replace(/\D/g, '')}`}
+          href={storeConfig.whatsappConfigured ? `https://wa.me/${WHATSAPP_PHONE.replace(/\D/g, '')}` : undefined}
+          aria-disabled={!storeConfig.whatsappConfigured}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -68,6 +70,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
           <div style={{ fontSize: '24px', marginBottom: '8px' }}>💬</div>
           <strong style={{ display: 'block', color: 'var(--color-gold-accent)', fontSize: '15px' }}>WhatsApp</strong>
           <span style={{ fontSize: '13px', color: '#aaa' }}>{WHATSAPP_PHONE}</span>
+          {!storeConfig.whatsappConfigured && <span style={{ display: 'block', fontSize: '11px', color: '#e6cba3', marginTop: '8px' }}>{language === 'ar' ? 'رقم المتجر غير مُعدّ في النسخة التجريبية' : 'Numéro à configurer pour ce magasin'}</span>
         </a>
 
         <a
@@ -202,8 +205,10 @@ export const ContactView: React.FC<ContactViewProps> = ({ language }) => {
               />
             </div>
 
+            {!storeConfig.whatsappConfigured && <p role="status" style={{ fontSize: '12px', color: '#e6cba3' }}>{language === 'ar' ? 'نموذج التواصل غير مفعّل في العرض التجريبي. أضف رقم WhatsApp حقيقيًا في إعدادات المتجر.' : 'Le formulaire est désactivé en démo. Configurez le vrai numéro WhatsApp dans les paramètres du magasin.'}</p>}
             <button
               type="submit"
+              disabled={!storeConfig.whatsappConfigured}
               style={{
                 backgroundColor: 'var(--color-gold-accent)',
                 color: 'var(--color-charcoal-900)',
