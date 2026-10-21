@@ -57,3 +57,7 @@ Bonjour, je crée des sites vitrines pour boutiques avec catalogue de produits, 
 - [ ] `npm run build` نجح.
 - [ ] صاحب المحل يعرف أن الدفع وإدارة المخزون غير موجودين في النسخة الحالية.
 - [ ] الاتفاق يشمل السعر، المنتجات، التعديلات، الاستضافة وموعد التسليم.
+
+
+## Démo publique et commandes
+Le numéro WhatsApp reste vide dans la démo publique afin qu’aucun visiteur ne puisse envoyer une commande à un numéro fictif. Pour une copie client, configurez `VITE_WHATSAPP_PHONE` avec le numéro autorisé du magasin (indicatif international, chiffres uniquement). Les variables `VITE_*` sont publiques et ne doivent jamais contenir de secrets.
