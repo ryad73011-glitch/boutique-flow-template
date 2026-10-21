@@ -249,6 +249,7 @@ export const App: React.FC = () => {
           language={language}
           onClose={() => setCartOpen(false)}
           onRemove={removeFromCart}
+          onClear={() => setCartItems([])}
           onChangeQuantity={changeCartQuantity}
         />
       )}
