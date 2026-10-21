@@ -14,11 +14,12 @@ interface CartDrawerProps {
   language: Language;
   onClose: () => void;
   onRemove: (productId: string, size: string) => void;
+  onClear: () => void;
   onChangeQuantity: (productId: string, size: string, quantity: number) => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
-  items, language, onClose, onRemove, onChangeQuantity
+  items, language, onClose, onRemove, onClear, onChangeQuantity
 }) => {
   const isArabic = language === 'ar';
   const [customerName, setCustomerName] = useState('');
@@ -63,6 +64,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           <button type="button" onClick={onClose} aria-label={isArabic ? 'إغلاق السلة' : 'Fermer le panier'} style={{ background: 'transparent', border: '1px solid var(--color-charcoal-600)', color: 'var(--color-warm-cream)', borderRadius: '6px', padding: '8px 12px', cursor: 'pointer' }}>✕</button>
         </header>
 
+        {items.length > 0 && (
+          <button type="button" onClick={onClear} style={{ alignSelf: 'flex-start', background: 'transparent', border: '1px solid var(--color-charcoal-600)', borderRadius: '5px', color: '#e6a2a2', padding: '7px 10px', fontSize: '12px', cursor: 'pointer' }}>
+            {isArabic ? 'إفراغ السلة' : 'Vider le panier'}
+          </button>
+        )}
+
         {items.length === 0 ? (
           <div style={{ padding: '36px 12px', textAlign: 'center', color: '#aaa' }}>
             <p style={{ fontSize: '16px', marginBottom: '8px' }}>{isArabic ? 'السلة فارغة حاليًا' : 'Votre panier est vide'}</p>
@@ -81,7 +88,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
                       <button type="button" aria-label={isArabic ? 'تقليل الكمية' : 'Diminuer la quantité'} onClick={() => onChangeQuantity(item.product.id, item.size, item.quantity - 1)} style={quantityButtonStyle}>−</button>
                       <span aria-live="polite">{item.quantity}</span>
-                      <button type="button" aria-label={isArabic ? 'زيادة الكمية' : 'Augmenter la quantité'} onClick={() => onChangeQuantity(item.product.id, item.size, item.quantity + 1)} style={quantityButtonStyle}>+</button>
+                      <button type="button" aria-label={isArabic ? 'زيادة الكمية' : 'Augmenter la quantité'} disabled={item.quantity >= 99} onClick={() => onChangeQuantity(item.product.id, item.size, item.quantity + 1)} style={{ ...quantityButtonStyle, opacity: item.quantity >= 99 ? 0.45 : 1, cursor: item.quantity >= 99 ? 'not-allowed' : 'pointer' }}>+</button>
                       <button type="button" onClick={() => onRemove(item.product.id, item.size)} style={{ marginInlineStart: 'auto', border: 'none', background: 'transparent', color: '#e6a2a2', textDecoration: 'underline', cursor: 'pointer', fontSize: '12px' }}>{isArabic ? 'حذف' : 'Retirer'}</button>
                     </div>
                   </div>
