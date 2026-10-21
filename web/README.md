@@ -27,7 +27,8 @@ Le résultat de production se trouve dans `web/dist/`.
 2. Remplacez les valeurs `VITE_*` : nom, slogans, WhatsApp au format international avec indicatif pays, téléphone, adresse et horaires.
 3. Modifiez les produits et les prix dans `src/data/products.ts`. Les textes français et arabes de l'interface se trouvent dans `src/translations.ts`.
 4. Remplacez les images de démonstration par les photos du commerçant, avec son autorisation.
-5. Lancez `npm run build` et testez les liens WhatsApp sur téléphone avant livraison.
+5. Relisez la page « FAQ & Informations pratiques » : les règles de livraison, paiement, retours et confidentialité sont des textes indicatifs à adapter au commerçant.
+6. Lancez `npm run build` et testez les liens WhatsApp sur téléphone avant livraison.
 
 Les variables `VITE_*` sont intégrées au code envoyé au navigateur : n'y placez jamais de mots de passe, clés privées ou secrets de paiement.
 
@@ -40,7 +41,8 @@ Les variables `VITE_*` sont intégrées au code envoyé au navigateur : n'y plac
 - Les boutons de produit préparent aussi un message WhatsApp contenant la référence, le prix et la taille sélectionnée.
 - Le formulaire de contact prépare un message dans WhatsApp. **Le client doit lui-même appuyer sur Envoyer** ; le site n'expédie pas les messages automatiquement.
 - Aucun paiement en ligne, gestion de stock réelle, compte client, tableau de bord commerçant ou stockage serveur n'est implémenté dans ce modèle.
-- Le catalogue est local et les coordonnées/produits de départ sont fictifs. Vérifiez les prix, disponibilités, coordonnées, livraison, retours et conditions commerciales avec le commerçant avant publication.
+- Une page bilingue FAQ/informations pratiques explique le parcours de commande, la livraison, les retours et l’usage des données. Son contenu reste un modèle indicatif, à vérifier et personnaliser avant publication.
+- Le téléphone de l’atelier est vide par défaut et l’appel est désactivé jusqu’à ce qu’un vrai numéro soit configuré. Le catalogue et les coordonnées de départ sont des données de démonstration. Vérifiez prix, disponibilités, coordonnées, livraison, retours et conditions commerciales avec le commerçant avant publication.
 
 ## Déploiement
 
