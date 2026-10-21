@@ -7,12 +7,14 @@ interface ProductDetailModalProps {
   product: Product;
   language: Language;
   onClose: () => void;
+  onAddToCart: (product: Product, size: string) => void;
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   product,
   language,
-  onClose
+  onClose,
+  onAddToCart
 }) => {
   const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'Standard');
   const t = translations[language];
@@ -169,6 +171,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {language === 'ar' ? product.fabricAr : product.fabricFr}
             </p>
           </div>
+
+          <button
+            type="button"
+            onClick={() => onAddToCart(product, selectedSize)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              backgroundColor: 'transparent',
+              color: 'var(--color-gold-accent)',
+              border: '1px solid var(--color-gold-accent)',
+              padding: '13px',
+              borderRadius: '6px',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+          >
+            {language === 'ar' ? 'إضافة إلى السلة' : 'Ajouter au panier'}
+          </button>
 
           {/* WhatsApp Action */}
           <a
