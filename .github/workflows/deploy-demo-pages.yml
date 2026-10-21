@@ -44,7 +44,7 @@ jobs:
           VITE_STORE_NAME_AR: 'دار الجزائر — نسخة تجريبية'
           VITE_STORE_TAGLINE_FR: 'DÉMONSTRATION — DONNÉES FICTIVES'
           VITE_STORE_TAGLINE_AR: 'عرض تجريبي — بيانات غير حقيقية'
-          VITE_WHATSAPP_PHONE: '213555123456'
+          VITE_WHATSAPP_PHONE: ''
           VITE_ATELIER_PHONE: '+213 555 123 456'
           VITE_ATELIER_ADDRESS_FR: 'Adresse de démonstration — à remplacer'
           VITE_ATELIER_ADDRESS_AR: 'عنوان تجريبي — يجب تغييره'
